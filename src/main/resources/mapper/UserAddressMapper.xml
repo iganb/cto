@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cto.mapper.UserAddressMapper">
+
+
+
+    <resultMap id="pageUserAddress" type="com.example.cto.entity.Address">
+
+
+        <result column="id" property="id"/>
+        <result column="region" property="region"/>
+        <result column="full_address"  property="fullAddress"/>
+        <result column="name" property="name"/>
+        <result column="phone" property="phone"/>
+        <result column="default_num" property="defaultNum"/>
+        <result column="u_id" property="uId"/>
+    </resultMap>
+    <delete id="deleteByUA">
+        delete from user_address where u_id=#{u}
+    </delete>
+    <select id="findPage" resultMap="pageUserAddress">
+
+        select ua.u_id,address.*  from user_address as ua
+        left join address
+        on ua.u_id=#{uId} and ua.a_id=address.id
+        <where>
+            <if test="name !=null and name != ''">
+                and name like  concat('%',#{name},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

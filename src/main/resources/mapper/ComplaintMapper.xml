@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cto.mapper.ComplaintMapper">
+
+    <select id="findComplaintPage" resultType="com.example.cto.entity.Complaint">
+        select * from complaint
+        <where>
+            <if test="wayBillNumber !=null and wayBillNumber != ''">
+                and way_bill_number like  concat('%',#{wayBillNumber},'%')
+            </if>
+        </where>
+    </select>
+    <select id="getByWayBillNumber" resultType="com.example.cto.entity.Complaint">
+        select  * from complaint
+        where way_bill_number=#{wayBillNumber}
+    </select>
+</mapper>

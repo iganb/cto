@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cto.mapper.EmployeeMapper">
+
+    <select id="findDriverPage" resultType="com.example.cto.entity.Employee">
+        select  employee.*,truck.type from employee
+        left  join truck on employee.truck_id=truck.id
+
+        <where>
+            employee.role='ROLL_DRIVER'
+            <if test="realname !=null and realname != ''">
+                and realname like  concat('%',#{realname},'%')
+            </if>
+            <if test="phone !=null and phone != ''">
+                and phone like  concat('%',#{phone},'%')
+            </if>
+        </where>
+    </select>
+    <select id="getDrivers" resultType="com.example.cto.entity.Employee">
+        select * from employee where role='ROLL_DRIVER'
+    </select>
+    <select id="findDriverOrder" resultType="com.example.cto.entity.Order">
+        select * from userorder where driver_id=#{driverId}
+    </select>
+    <select id="getCouriers" resultType="com.example.cto.entity.Employee">
+        select * from employee where role='ROLL_COURIER'
+    </select>
+    <select id="findCourierOrder" resultType="com.example.cto.entity.Order">
+                select * from userorder where courier_id=#{courierId}
+
+    </select>
+    <select id="findCourierPage" resultType="com.example.cto.entity.Employee">
+        select  employee.*,netpoint.address from employee
+        left  join netpoint on employee.netpoint_id=netpoint.id
+
+        <where>
+            employee.role='ROLL_COURIER'
+            <if test="realname !=null and realname != ''">
+                and realname like  concat('%',#{realname},'%')
+            </if>
+            <if test="phone !=null and phone != ''">
+                and phone like  concat('%',#{phone},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

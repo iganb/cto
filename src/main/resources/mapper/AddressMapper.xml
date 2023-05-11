@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cto.mapper.AddressMapper">
+    <update id="updateDefaultZero">
+        update address,user_address set default_num=0 where u_id=#{uId} and a_id=address.id
+    </update>
+    <update id="toBeDefault">
+        update address set default_num=1 where id=#{id}
+    </update>
+
+    <select id="findAddressById" resultType="com.example.cto.entity.Address">
+        select address.*  from user_address as ua
+        left join address
+        on ua.u_id=#{id} and ua.a_id=address.id
+    </select>
+</mapper>

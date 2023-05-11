@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.cto.mapper.OrderMapper">
+
+    <select id="findAllPage" resultType="com.example.cto.entity.Order">
+
+        select userorder.*,employee.realname as driverName,employee.realname as courierName
+        from userorder left  join employee on driver_id =employee.id and courier_id=employee.id
+        <where>
+
+            <if test="orderNumber !=null and orderNumber != ''">
+                and order_number like  concat('%',#{orderNumber},'%')
+            </if>
+            <if test="wayBillNumber !=null and wayBillNumber != ''">
+                and way_bill_number like  concat('%',#{wayBillNumber},'%')
+            </if>
+            <if test="senderName !=null and senderName != ''">
+                and sender_name like  concat('%',#{senderName},'%')
+            </if>
+            <if test="addresseeName !=null and addresseeName != ''">
+                and addressee_name like  concat('%',#{addresseeName},'%')
+            </if>
+        </where>
+    </select>
+    <select id="fenDriverPage" resultType="com.example.cto.entity.Order">
+        select userorder.*,employee.realname as driverName,employee.realname as courierName
+        from userorder left  join employee on driver_id =employee.id and courier_id=employee.id
+        <where>
+            userorder.status=0
+            <if test="orderNumber !=null and orderNumber != ''">
+                and order_number like  concat('%',#{orderNumber},'%')
+            </if>
+            <if test="wayBillNumber !=null and wayBillNumber != ''">
+                and way_bill_number like  concat('%',#{wayBillNumber},'%')
+            </if>
+            <if test="senderName !=null and senderName != ''">
+                and sender_name like  concat('%',#{senderName},'%')
+            </if>
+            <if test="addresseeName !=null and addresseeName != ''">
+                and addressee_name like  concat('%',#{addresseeName},'%')
+            </if>
+        </where>
+    </select>
+    <select id="driverPage" resultType="com.example.cto.entity.Order">
+        select * from userorder where driver_id=#{driverId} and status=3
+    </select>
+
+<resultMap id="timeCount" type="com.example.cto.entity.Home">
+    <result column="createTime" property="createTime"></result>
+    <result column="count" property="count"></result>
+</resultMap>
+    <select id="findOrderTime"  resultMap="timeCount">
+        SELECT DATE_FORMAT(create_time,'%Y-%m') AS month,count(*) as count
+FROM userorder 
+GROUP BY DATE_FORMAT(create_time,'%Y-%m')
+
+    </select>
+    <select id="fenCourierPage" resultType="com.example.cto.entity.Order">
+        select userorder.*,employee.realname as driverName,employee.realname as courierName
+        from userorder left  join employee on driver_id =employee.id and courier_id=employee.id
+        <where>
+            userorder.status=4
+            <if test="orderNumber !=null and orderNumber != ''">
+                and order_number like  concat('%',#{orderNumber},'%')
+            </if>
+            <if test="wayBillNumber !=null and wayBillNumber != ''">
+                and way_bill_number like  concat('%',#{wayBillNumber},'%')
+            </if>
+            <if test="senderName !=null and senderName != ''">
+                and sender_name like  concat('%',#{senderName},'%')
+            </if>
+            <if test="addresseeName !=null and addresseeName != ''">
+                and addressee_name like  concat('%',#{addresseeName},'%')
+            </if>
+        </where>
+    </select>
+    <select id="courierPage" resultType="com.example.cto.entity.Order">
+        select * from userorder where courier_id=#{courierId} and status=8
+    </select>
+</mapper>
